@@ -10,7 +10,7 @@ from utils.formatters import fmt
 import asyncio, random
 
 router = Router()
-
+pending_bets = {}
 
 
 # Обязательно добавь этот класс, чтобы ошибка GameStates исчезла!
