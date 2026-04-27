@@ -1,4 +1,4 @@
-from aiogram.fsm.context import FSMContext
+from aiogram.fsm.context import FSMContext # Исправлено: с маленькой буквы
 import asyncio, random
 from aiogram import Router, F
 from aiogram.types import Message
@@ -7,6 +7,7 @@ from utils.formatters import fmt
 
 router = Router()
 active_bets = {}
+
 
 # --- МИНИ-ИГРА: УГАДАЙ ЧИСЛО ---
 @router.message(F.text == "🎮 Играть")
