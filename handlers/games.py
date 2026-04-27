@@ -144,7 +144,7 @@ async def take_bet(message: Message):
     except Exception as e:
         logging.error(f"Ошибка в ставке: {e}")
 
-@routep.message(F.text.lower() == "go")
+@router.message(F.text.lower() == "go")
 @router.message(F.text.lower() == "го")
 async def spin(message: Message):
     if message.chat.type == "private":
