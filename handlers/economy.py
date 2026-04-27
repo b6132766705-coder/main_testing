@@ -13,7 +13,7 @@ router = Router()
 
 # --- КОМАНДЫ ---
 
-@dp.message(Command("start"))
+@router.message(Command("start"))
 async def cmd_start(message: Message):
     await get_user(message.from_user.id, message.from_user.full_name)
     await message.answer(
@@ -26,7 +26,7 @@ async def cmd_start(message: Message):
 
 
 # --- СПИСОК КОМАНД ---
-@dp.message(Command("commands", "comands", "help"))
+@router.message(Command("commands", "comands", "help"))
 async def cmd_commands(message: Message):
     help_text = (
         "🎮 <b>Все команды «Угадайка бот»:</b>\n\n"
@@ -54,7 +54,7 @@ async def cmd_commands(message: Message):
     await message.answer(help_text, parse_mode="HTML")
 
 # --- ПРАВИЛА ---
-@dp.message(Command("rules"))
+@router.message(Command("rules"))
 async def cmd_rules(message: Message):
     rules_text = (
         "📜 <b>Правила «Угадайка бот»</b>\n\n"
@@ -71,8 +71,8 @@ async def cmd_rules(message: Message):
     await message.answer(rules_text, parse_mode="HTML")
 
 
-@dp.message(F.text == "👤 Профиль")
-@dp.message(F.text.lower() == "б")
+@router.message(F.text == "👤 Профиль")
+@router.message(F.text.lower() == "б")
 async def show_profile(message: Message):
     uid = message.from_user.id
     await get_user(uid, message.from_user.full_name) 
@@ -93,7 +93,7 @@ async def show_profile(message: Message):
 
     await message.answer(f"👤 **Профиль:** {message.from_user.first_name}\n💰 **Баланс:** {fmt(balance)} Угадаек\n📝 **Статус:** {status}", parse_mode="Markdown")
 
-@dp.message(F.text.lower().startswith("п "), F.reply_to_message)
+@router.message(F.text.lower().startswith("п "), F.reply_to_message)
 async def transfer(message: Message):
     try:
         amount = int(message.text.split()[1])
@@ -111,7 +111,7 @@ async def transfer(message: Message):
         await message.answer(f"✅ Переведено {fmt(amount)} Угадаек для {receiver.first_name}")
     except: pass
 
-@dp.message(F.text == "🎁 Бонус")
+@router.message(F.text == "🎁 Бонус")
 async def get_bonus(message: Message):
     res = await get_user(message.from_user.id, message.from_user.full_name)
     balance, last_bonus_str = res
@@ -134,8 +134,8 @@ async def get_bonus(message: Message):
     await message.answer(f"🎁 Ты получил бонус: **{fmt(bonus_amount)}** Угадаек!")
 
 # --- ЕДИНЫЙ РЕЙТИНГ (Кнопка + Команда) ---
-@dp.message(F.text == "🏆 Рейтинг")
-@dp.message(Command("top"))
+@router.message(F.text == "🏆 Рейтинг")
+@router.message(Command("top"))
 async def show_rating(message: Message):
     async with aiosqlite.connect(DB_PATH) as db:
         async with db.execute("SELECT name, balance, id FROM users ORDER BY balance DESC LIMIT 10") as cursor:
@@ -156,7 +156,7 @@ async def show_rating(message: Message):
     await message.answer(text, parse_mode="HTML", disable_web_page_preview=True)
 
 
-@dp.message(F.text == "📊 Ставки")
+@router.message(F.text == "📊 Ставки")
 async def show_my_bets(message: Message):
     cid = message.chat.id
     uid = message.from_user.id
@@ -170,7 +170,7 @@ async def show_my_bets(message: Message):
             text += f"• {fmt(b['amount'])} ➔ {t}\n"
     await message.answer(text)
 
-@dp.message(F.text == "🚫 Отмена")
+@router.message(F.text == "🚫 Отмена")
 async def cancel_my_bets(message: Message):
     cid = message.chat.id
     uid = message.from_user.id
