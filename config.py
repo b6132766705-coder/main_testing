@@ -4,5 +4,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
-DB_PATH = "database/game_bot.db"
+ADMIN_ID = 1316137517
+DB_PATH = "database/butya.db"  # Путь внутри проекта
 
