@@ -1,16 +1,16 @@
-from aiogram.fsm.context import FSMContext
-import asyncio, random
 from aiogram import Router, F
 from aiogram.types import Message
+from aiogram.fsm.context import FSMContext
+from aiogram.fsm.state import State, StatesGroup # Добавь эту строку!
 
-# Добавь эту строчку!
-from keyboards.reply import get_main_kb 
-
+from keyboards.reply import get_main_kb # Импорт, который мы обсуждали ранее
 from database.db import update_balance, get_user
 from utils.formatters import fmt
 
+import asyncio, random
+
 router = Router()
-active_bets = {}
+
 
 
 # Обязательно добавь этот класс, чтобы ошибка GameStates исчезла!
