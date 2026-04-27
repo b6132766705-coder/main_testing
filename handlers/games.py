@@ -1,4 +1,5 @@
-from aiogram.fsm.context import FSMContext # Исправлено: с маленькой буквы
+from aiogram.fsm.context import FSMContext
+from aiogram.fsm.state import State, StatesGroup # Добавили импорт состояний
 import asyncio, random
 from aiogram import Router, F
 from aiogram.types import Message
@@ -7,6 +8,11 @@ from utils.formatters import fmt
 
 router = Router()
 active_bets = {}
+
+# Обязательно добавь этот класс, чтобы ошибка GameStates исчезла!
+class GameStates(StatesGroup):
+    guessing = State() 
+
 
 
 # --- МИНИ-ИГРА: УГАДАЙ ЧИСЛО ---
