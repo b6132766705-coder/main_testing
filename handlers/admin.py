@@ -1,6 +1,6 @@
 
 # --- АДМИН-ЧИТ: ОБНУЛЕНИЕ ТАЙМЕРОВ ---
-@dp.message(lambda m: m.text and m.text.lower().startswith("обнулить"))
+@router.message(lambda m: m.text and m.text.lower().startswith("обнулить"))
 async def admin_reset(message: Message):
     logging.info(f"Команда 'обнулить' от ID: {message.from_user.id}")
 
@@ -25,7 +25,7 @@ async def admin_reset(message: Message):
 
 # --- АДМИН-КОМАНДЫ (ИСПРАВЛЕННЫЕ) ---
 
-@dp.message(F.reply_to_message, F.text.lower().startswith("+предмет"), lambda m: m.from_user.id == ADMIN_ID)
+@router.message(F.reply_to_message, F.text.lower().startswith("+предмет"), lambda m: m.from_user.id == ADMIN_ID)
 async def admin_give_item(message: Message):
     parts = message.text.split()
     try:
@@ -47,7 +47,7 @@ async def admin_give_item(message: Message):
         await message.answer("❌ Ошибка. Пример: <code>+предмет Клевер 5</code>")
 
 
-@dp.message(F.reply_to_message, F.text.lower().startswith("-предмет"), lambda m: m.from_user.id == ADMIN_ID)
+@router.message(F.reply_to_message, F.text.lower().startswith("-предмет"), lambda m: m.from_user.id == ADMIN_ID)
 async def admin_take_item(message: Message):
     parts = message.text.split()
     try:
@@ -69,7 +69,7 @@ async def admin_take_item(message: Message):
 
 
 # Стало:
-@dp.message(F.reply_to_message, lambda m: m.from_user.id == ADMIN_ID)
+@router.message(F.reply_to_message, lambda m: m.from_user.id == ADMIN_ID)
 async def admin_balance_change(message: Message):
     if message.text.startswith(("+", "-")) and "предмет" not in message.text.lower():
         try:
