@@ -14,7 +14,12 @@ router = Router()
 @router.message(Command("start"))
 async def cmd_start(message: Message):
     await get_user(message.from_user.id, message.from_user.full_name)
-    await message.answer("🎰 Добро пожаловать в Угадайку!", reply_markup=get_main_kb())
+    await message.answer(
+        "🎰 Добро пожаловать в Угадайку!", 
+        reply_markup=get_main_kb(message.chat.type), # Добавили аргумент здесь
+        parse_mode="HTML"
+    )
+
 
 @router.message(F.text == "👤 Профиль")
 async def show_profile(message: Message):
