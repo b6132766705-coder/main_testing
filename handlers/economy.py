@@ -16,7 +16,9 @@ async def cmd_start(message: Message):
     await get_user(message.from_user.id, message.from_user.full_name)
     await message.answer(
         "🎰 Добро пожаловать в Угадайку!", 
-        reply_markup=get_main_kb(message.chat.type), # Добавили аргумент здесь
+        # Было:
+        reply_markup=get_main_kb(message.chat.type)
+
         parse_mode="HTML"
     )
 
