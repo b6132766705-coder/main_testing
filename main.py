@@ -8,9 +8,10 @@ async def main():
     await init_db()
     bot = Bot(token=TOKEN)
     dp = Dispatcher()
+    dp.include_router(economy.router)
+    dp.include_router(games.router)
+    dp.include_router(clans.router)
 
-    # Подключаем роутеры из папки handlers
-    dp.include_routers(economy.router, games.router, clans.router)
     
     print("🚀 Бот запущен!")
     await dp.start_polling(bot)
