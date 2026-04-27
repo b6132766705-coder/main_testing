@@ -8,14 +8,14 @@ router = Router()
 active_bets = {}
 
 # --- МИНИ-ИГРА: УГАДАЙ ЧИСЛО ---
-@dp.message(F.text == "🎮 Играть")
+@router.message(F.text == "🎮 Играть")
 async def start_guess(message: Message, state: FSMContext):
     num = random.randint(1, 10)
     await state.set_state(GameStates.guessing)
     await state.update_data(target=num, attempts=3)
     await message.answer("Я загадал число от 1 до 10. У тебя 3 попытки! Пиши число:")
 
-@dp.message(GameStates.guessing)
+@router.message(GameStates.guessing)
 async def process_guess(message: Message, state: FSMContext):
     if message.text.lower() == "отмена":
         await state.clear()
@@ -55,7 +55,7 @@ def is_valid_bet_format(m: Message):
         
     return True
 
-@dp.message(is_valid_bet_format)
+@router.message(is_valid_bet_format)
 async def take_bet(message: Message):
     if message.chat.type == "private":
         return await message.answer("🎰 В рулетку можно играть только в группах! Добавь меня в чат с друзьями.")
@@ -136,8 +136,8 @@ async def take_bet(message: Message):
     except Exception as e:
         logging.error(f"Ошибка в ставке: {e}")
 
-@dp.message(F.text.lower() == "go")
-@dp.message(F.text.lower() == "го")
+@routep.message(F.text.lower() == "go")
+@router.message(F.text.lower() == "го")
 async def spin(message: Message):
     if message.chat.type == "private":
         return await message.answer("🎰 В рулетку можно играть только в группах!")
@@ -235,7 +235,7 @@ async def spin(message: Message):
     
     await message.answer(final_text, parse_mode="HTML")
 
-@dp.message(F.text.lower() == "лог")
+@router.message(F.text.lower() == "лог")
 async def show_history(message: Message):
     async with aiosqlite.connect(DB_PATH) as db:
         # Достаем 10 последних записей
@@ -265,7 +265,7 @@ async def show_history(message: Message):
     await message.answer(res_text, parse_mode="HTML")
 
 # --- ИГРА: ДУЭЛЬ ---
-@dp.message(F.text.lower().startswith("дуэль ") | F.text.lower().startswith("дуель "), F.reply_to_message)
+@router.message(F.text.lower().startswith("дуэль ") | F.text.lower().startswith("дуель "), F.reply_to_message)
 async def start_duel(message: Message):
     if message.chat.type == "private":
         return await message.answer("❌ Дуэли возможны только в группах!")
@@ -319,7 +319,7 @@ async def start_duel(message: Message):
     except Exception as e:
         logging.error(f"Ошибка дуэли: {e}")
 
-@dp.message(F.text == "🤝 Принять дуэль")
+@router.message(F.text == "🤝 Принять дуэль")
 async def accept_duel(message: Message):
     if message.chat.type == "private": return
     
