@@ -1,2 +1,4 @@
-aiosqlite
 aiogram
+aiosqlite
+python-dotenv
+
